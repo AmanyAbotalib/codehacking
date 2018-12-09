@@ -11,10 +11,30 @@
 |
 */
 
+use App\User;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::auth();
+Route::auth();    // login and register
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index');  // login and register
+
+// just for testing user role relation
+//Route::get('/user_role', function(){
+//
+//    $user = User::findOrFail(1);
+//
+//    return $user->role->name;
+//});
+
+//route to test admin layout
+
+Route::get('/admin', function(){
+
+    return view('admin.index');
+
+});
+
+Route::resource('/admin/users', 'AdminUsersController'); // to know how to treat with it php artisan route:list
