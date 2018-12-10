@@ -33,8 +33,8 @@ Route::get('/home', 'HomeController@index');  // login and register
 
 Route::get('/admin', function(){
 
-    return view('admin.index');
+    return view('admin.index');  // to call index.php under admin folder
 
 });
 
-Route::resource('/admin/users', 'AdminUsersController'); // to know how to treat with it php artisan route:list
+Route::resource('/admin/users', 'AdminUsersController'); // (Admin/users) to know how to treat with it php artisan route:list
