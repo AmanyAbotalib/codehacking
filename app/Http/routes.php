@@ -37,4 +37,13 @@ Route::get('/admin', function(){
 
 });
 
-Route::resource('/admin/users', 'AdminUsersController'); // (Admin/users) to know how to treat with it php artisan route:list
+Route::group(['middleware'=>'admin'], function(){
+
+    Route::resource('/admin/users', 'AdminUsersController'); // (Admin/users) to know how to treat with it php artisan route:list
+
+    Route::resource('/admin/posts', 'AdminPostsController');
+
+
+
+});
+

@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller
 {
@@ -51,16 +52,18 @@ class AdminUsersController extends Controller
     {
         //
 
-        if(trim($request->password) == ''){  // check if user doesn't enter password
+//        if(trim($request->password) == ''){  // check if user doesn't enter password
+//
+//            $input = $request->except('password');
+//
+//        }else{
+//
+//            $input = $request->all();
+//            $input['password'] = bcrypt($request->password);
+//
+//        }
 
-            $input = $request->except('password');
-
-        }else{
-
-            $input = $request->all();
-            $input['password'] = bcrypt($request->password);
-
-        }
+        $input = $request->all();
 
        $request->file('photo_id');
 
@@ -77,6 +80,8 @@ class AdminUsersController extends Controller
             $input['photo_id'] = $photo->id;
 
         }
+
+        $input['password'] = bcrypt($request->password);
 
         User::create($input);
 
@@ -124,16 +129,19 @@ class AdminUsersController extends Controller
         //
         $user = User::findOrFail($id);
 
+        $input = $request->all();
+
         if(trim($request->password) == ''){  // check if user doesn't enter password
 
             $input = $request->except('password');
 
-        }else{
-
-            $input = $request->all();
-            $input['password'] = bcrypt($request->password);
-
         }
+else{
+//
+//            $input = $request->all();
+            $input['password'] = bcrypt($request->password);
+//
+       }
 
         if($file = $request->file('photo_id')){
 
@@ -146,6 +154,11 @@ class AdminUsersController extends Controller
             $input['photo_id'] = $photo->id;
 
         }
+
+//        if($request->password != ''){
+//
+//            $input['password'] = bcrypt($request->password);
+//        }
 
         $user->update($input);
 
@@ -162,6 +175,14 @@ class AdminUsersController extends Controller
     {
         //
 
-        return view('admin.users.index');
+        $user = User::findOrFail($id);
+
+        unlink(public_path() . $user->photo->file);  // delete user image from images folder -- unlink is laravel function
+
+        $user->delete(); // delete th user
+
+        Session::flash('deleted_user','The user has been deleted'); // save status that this user is deleted
+
+        return redirect('/admin/users');
     }
 }

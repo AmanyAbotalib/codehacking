@@ -3,6 +3,14 @@
 @section('content')
     <h1>Users</h1>
 
+    {{-- check if there is any user has been deleted or updated --}}
+
+    @if(Session::has('deleted_user'))
+
+        <p class="bg-danger">{{session('deleted_user')}}</p>
+
+        @endif
+
     <table class="table">
         <thead>
           <tr>
