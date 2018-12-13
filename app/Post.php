@@ -32,6 +32,6 @@ class Post extends Model
 //one to one relationship
     public function category(){
 
-        $this->belongsTo('App\Category');
+       return $this->belongsTo('App\Category');
     }
 }
